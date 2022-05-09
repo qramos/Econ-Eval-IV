@@ -1,8 +1,8 @@
 #Base Case
 N = 100, 000
 S = 99, 999
+V = 0
 I = 1
-E = 0
 R = 0
 
 #Simulation Time (1 day)
