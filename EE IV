@@ -1,0 +1,36 @@
+#Base Case
+N = 100, 000
+S = 99, 999
+I = 1
+E = 0
+R = 0
+
+#Simulation Time (1 day)
+β = 
+µ = 
+γ = 
+κ = 
+v = 
+
+#Actual Code
+N = 100000
+beta = 
+mu =
+gamma = 
+v =
+kappa = 
+Deaths = 
+
+time = 
+dt = 
+
+S = 99999
+E = 0
+I = 1
+R = 0
+
+Svec = S
+Evec = E
+Ivec = I
+Rvec = R
+
