@@ -15,30 +15,32 @@ v =
 
 #Actual Code
 N = 100000
-beta = 
+B1 =
+B2 =
 mu =
 gamma = 
 v =
 kappa = 
 Deaths = 
 
-w = 
-r1 =
-r2 =
-d1 = 
-d2 =
+y = 0.821
+w = 0.0015
+r1 = 1
+r2 = 0.014
+d1 = 0
+d2 = 0.019
 p = 
 1-p =
 q =
 1-q =
 
-time = 
-dt = 
+time = 1
+dt = 1
 
-S = 99999
+S = 99998
 V = 0
-Im = 
-Is = 
+Im = 1
+Is = 1
 R = 0
 
 Svec = S
