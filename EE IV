@@ -1,8 +1,9 @@
 #Base Case
 N = 100, 000
-S = 99, 999
+S = 99, 998
 V = 0
-I = 1
+Im = 1
+Is = 1
 R = 0
 
 #Simulation Time (1 day)
@@ -21,16 +22,56 @@ v =
 kappa = 
 Deaths = 
 
+w = 
+r1 =
+r2 =
+d1 = 
+d2 =
+p = 
+1-p =
+q =
+1-q =
+
 time = 
 dt = 
 
 S = 99999
-E = 0
-I = 1
+V = 0
+Im = 
+Is = 
 R = 0
 
 Svec = S
-Evec = E
-Ivec = I
+Vvec = V
+Imvec = Im
+Isvec = Is
 Rvec = R
 
+#Creating a Loop
+for (i in 1:time){
+for (i in 1:(1/dt)){
+S = S(t) + w*R(t)*dt + w*V(t)*dt - mu*N(t)*dt - p[B1(Im(t)+Is(t))*S(t)*dt] - (1-p)*[B1(Im(t)+Is(t))*S(t)*dt] - y*S(t)*dt - mu*S(t)*dt
+V = V(t) + y*S(t)*dt + w*V(t)*dt + w*R(t)*dt - q[B2(Im(t)+Is(t))*S(t)*dt] - (1-q)*[B2(Im(t)+Is(t))*S(t)*dt] - mu*V(t)*dt
+Im = Im(t)+(1-p)[B1(Im(t)+Is(t))*S(t)*dt] + (1-q)[B2(Im(t)+Is(t))*S(t)*dt] - r1*(Im(t)*dt) - d1*Im(t)*dt - mu*Im(t)*dt
+Is = Is(t) + p[B1(Im(t)+Is(t))*S(t)*dt] + q[B2(Im(t)+Is(t))*S(t)*dt] - r2(Is(t)*dt) - d2*Is(t)*dt - mu*Im(t)*dt
+R = R(t) + r1(Im(t)*dt) + r2(Is(t)*dt) - w*R(t)*dt - mu*R(t)*dt
+
+Svec = c(Svec, S)
+Vvec = c(Vvec, E)
+Imvec = c(Imvec, I)
+Isvec = c(Isvec, I)
+Rvec = c(Rvec, R)
+
+Deaths = c(Deaths, kappa*I*dt)
+
+N = S+V+Im+Is+R
+}
+}
+
+#Plotting Progression Over Time
+plot(Svec, col="blue", type="l", xlab = "Time", ylab = "Population", ylim=c(0,100000))
+lines(Vvec, col = "purple")
+lines(Imvec, col = "red")
+lines(Isvec, col = "orange")
+lines(Rvec, col = "green")
+legend(1500, 100000, c("S","V","Im", "Is","R"), lty=c(1,1,1,1,1), col=c("blue","purple","red","orange","green"))
