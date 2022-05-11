@@ -15,15 +15,15 @@ v =
 
 #Actual Code
 N = 100000
-B1 =
-B2 =
-mu =
+B1 = 0.003478
+B2 = 0.00025
+mu = 0.00575 ##Maryland birth rate
 gamma = 
 v =
 kappa = 
 Deaths = 
 
-y = 0.821
+y = 0.758 ##Maryland vaccination rate
 w = 0.0015
 r1 = 1
 r2 = 0.014
