@@ -77,3 +77,5 @@ lines(Imvec, col = "red")
 lines(Isvec, col = "orange")
 lines(Rvec, col = "green")
 legend(1500, 100000, c("S","V","Im", "Is","R"), lty=c(1,1,1,1,1), col=c("blue","purple","red","orange","green"))
+
+#Test if Alex can edit
