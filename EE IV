@@ -1,10 +1,17 @@
 #Base Case
-N = 100, 000
-S = 99, 998
-V = 0
-Im = 1
-Is = 1
-R = 0
+NH = 
+SH =
+VH =
+RH =
+IsH =
+ImH = 
+NL =
+SL =
+VL =
+RL =
+IsL =
+ImL =
+Y = 
 
 #Simulation Time (1 day)
 β = 
