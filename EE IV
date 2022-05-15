@@ -33,8 +33,8 @@ pSH = 0.01958759014
 pSL = 0.01342989841
 qVH = 0.0137113131
 qVL = 0.009400928886
-pax = 0
-cov = 0.89
+pax = 0.89
+cov = 0
 
 NH = 1781778
 SH = 1047693.836
@@ -93,17 +93,14 @@ for (i in 1:time){
   }
 }
 
-
-
-#Plotting Progression Over Time
-plot(SHvec, col="blue", type="l", xlab = "Time", ylab = "Population", ylim=c(0,100000))
+plot(SHvec, col="blue", type="l", xlab = "Time", ylab = "Population", ylim=c(0,100000), xlim=c(0,7))
 lines(VHvec, col = "red")
 lines(ImHvec, col = "pink")
 lines(IsHvec, col = "brown")
 lines(RHvec, col = "lightpink")
 legend(1500, 100000, c("SH","VH", "ImH", "IsH", "RH"), lty=c(1,1,1,1,1), col=c("blue","red", "pink", "brown", "lightpink"))
 
-plot(SLvec, col="blue", type="l", xlab = "Time", ylab = "Population", ylim=c(0,100000))
+plot(SLvec, col="blue", type="l", xlab = "Time", ylab = "Population", ylim=c(0,100000), xlim=(0,7))
 lines(VLvec, col = "orange")
 lines(ImLvec, col = "green")
 lines(IsLvec, col = "yellow")
