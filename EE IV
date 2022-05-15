@@ -75,18 +75,18 @@ IsL = IsL + pSL[B1(ImH + ImL + IsH + IsL)*SL*dt] + qVL[B2(ImH + ImL + IsH + ImL)
 RH = RH + r(ImH*dt) + r(IsH*dt) - w*RH*dt - mu*RH*dt
 RL = RL  + r(ImL*dt) + r(IsL*dt) - w*RL*dt - mu*RL*dt
 
-SHvec = c(SHvec, S)
-SLvec = c(SLvec, S)
-VHvec = c(VHvec, E)
-VLvec = c(VLvec, E)
-ImHvec = c(ImHvec, I)
-ImLvec = c(ImLvec, I)
-IsHvec = c(IsHvec, I)
-IsLvec = c(IsLvec, I)
-RHvec = c(RHvec, R)
-RLvec = c(RLvec, R)
+SHvec = c(SHvec, SH)
+SLvec = c(SLvec, SL)
+VHvec = c(VHvec, EH)
+VLvec = c(VLvec, EL)
+ImHvec = c(ImHvec, ImH)
+ImLvec = c(ImLvec, ImL)
+IsHvec = c(IsHvec, IsH)
+IsLvec = c(IsLvec, IsL)
+RHvec = c(RHvec, RH)
+RLvec = c(RLvec, RL)
 
-Deaths = c(Deaths, kappa*I*dt)
+Deaths = c(Deaths, (d1)(ImH+ImL)*dt+(d2)(IsH+IsL)*dt)
 
 N = SH+SL+VH+VL+ImH+ImL+IsH+IsL+RH+RL
 }
