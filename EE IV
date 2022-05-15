@@ -1,40 +1,41 @@
 #Base Case
-NH = 1781778
-SH = 1047693.836
-VH = 734083.64
-RH = 0
-IsH = 208.6
-ImH = 3873.611
-NL = 3020857.491
-SL = 1669603.667
-VL = 1351253.824
-RL = 0
-IsL = 89.4
-ImL = 6567.389
-y = 513
+#Note that this study examines adults in Maryland
+NH = 1781778 #Total high-risk population
+SH = 1047693.836 #Susceptible (not fully vaccinated) high-risk population
+VH = 734083.64 #Vaccinated high-risk population
+RH = 0 #Recovered, not yet waned high-risk population
+IsH = 208.6 #High-risk patients with severe COVID-19 (hospitalized)
+ImH = 3873.611 #High-risk patients with mild COVID-19 (non-hospitalized)
+NL = 3020857.491 #Total low-risk population
+SL = 1669603.667 #Susceptible (not fully vaccinated) low-risk population
+VL = 1351253.824 #Vaccinated low-risk population
+RL = 0 #Recovered, not yet waned low-risk population
+IsL = 89.4 #Low-risk patients with severe COVID-19 (hospitalized)
+ImL = 6567.389 #Low-risk patients with mild COVID-19 (non-hospitalized)
+y = 0.0002134 #Daily vaccination rate per susceptible population
 
 #Simulation Time (1 day)
-time = 6
-dt = 1/30
+time = 6 #6 months
+dt = 1/30 #intended to model days
 
 #Actual Code
-B1 = 0.063
-B2 = 0.019
-r = 0.071
-R0 = 0.890
-w = 0.005555555556
-det = 0.286
-PdetH = 0.070
-PdetL = 0.048
-d1 = 0
-d2 = 0.0189
-mu = 0.0000311
-pSH = 0.01958759014
-pSL = 0.01342989841
-qVH = 0.0137113131
-qVL = 0.009400928886
-pax = 0.89
-cov = 0
+B1 = 0.063 #Per-contact infection rate among unvaccinated (daily)
+B2 = 0.019 #Per-contact infection rate among vaccinated (daily)
+r = 0.071 #Per-infected recovery rate (daily)
+R0 = 0.890 #Reproduction number
+w = 0.005555555556 #Waning rate
+det = 0.286 #Deterioration rate per infected from mild to severe infection
+PdetH = 0.070 #Probability of deterioration rate from mild to severe infection in high-risk patients
+PdetL = 0.048 #Probability of deterioration rate from mild to severe infection in low-risk patients
+d1 = 0 #Death rate from mild infection
+d2 = 0.0189 #Death rate from severe infection
+mu = 0.0000311 #Natural birth/death rate
+pSH = 0.01958759014 #Probability of high-risk unvaccinated individuals having severe infection
+pSL = 0.01342989841 #Probability of low-risk unvaccinated individuals having severe infection
+qVH = 0.0137113131 #Probability of high-risk vaccinated individuals having severe infection
+qVL = 0.009400928886 #Probability of low-risk vaccinated individuals having severe infection
+pax = 0.89 #Protective effect (%) of Paxlovid on preventing severe infection/death
+cov = 0 #Coverage of paxlovid
 
 NH = 1781778
 SH = 1047693.836
@@ -100,7 +101,7 @@ lines(IsHvec, col = "brown")
 lines(RHvec, col = "lightpink")
 legend(1500, 100000, c("SH","VH", "ImH", "IsH", "RH"), lty=c(1,1,1,1,1), col=c("blue","red", "pink", "brown", "lightpink"))
 
-plot(SLvec, col="blue", type="l", xlab = "Time", ylab = "Population", ylim=c(0,100000), xlim=(0,7))
+plot(SLvec, col="blue", type="l", xlab = "Time", ylab = "Population", ylim=c(0,100000), xlim=c(0,7))
 lines(VLvec, col = "orange")
 lines(ImLvec, col = "green")
 lines(IsLvec, col = "yellow")
