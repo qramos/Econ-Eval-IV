@@ -19,18 +19,18 @@ time = 6 #6 months
 dt = 1/30 #intended to model days
 
 #Actual Code
-B1 = 0.063 #Per-contact infection rate among unvaccinated (daily)
+B1 = 0.000000013128 #Per-contact infection rate among unvaccinated (daily)
 B2 = 0.019 #Per-contact infection rate among vaccinated (daily)
 r = 0.071 #Per-infected recovery rate (daily)
 R0 = 0.890 #Reproduction number
 w = 0.005555555556 #Waning rate
-det = 0.286 #Deterioration rate per infected from mild to severe infection
+det = 0.000000059358 #Deterioration rate per infected from mild to severe infection
 PdetH = 0.070 #Probability of deterioration rate from mild to severe infection in high-risk patients
 PdetL = 0.048 #Probability of deterioration rate from mild to severe infection in low-risk patients
 pH = 0.371 #Proportion of population that is high-risk
 pL = 0.629 #Proportion of population that is low-risk
 d1 = 0 #Death rate from mild infection
-d2 = 0.0189 #Death rate from severe infection
+d2 = 0.000000003926559647 #Death rate from severe infection
 mu = 0.0000311 #Natural birth/death rate
 pSH = 0.01958759014 #Probability of high-risk unvaccinated individuals having severe infection
 pSL = 0.01342989841 #Probability of low-risk unvaccinated individuals having severe infection
