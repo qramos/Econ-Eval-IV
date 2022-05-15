@@ -14,15 +14,15 @@ ImL = 6567.389
 y = 513
 
 #Simulation Time (1 day)
-t = 6
-dt = 0.03333333333
+time = 6
+dt = 1/30
 
 #Actual Code
 B1 = 0.063
 B2 = 0.019
 r = 0.071
 R0 = 0.890
-wR = 0.005555555556
+w = 0.005555555556
 det = 0.286
 PdetH = 0.070
 PdetL = 0.048
@@ -49,11 +49,12 @@ RL = 0
 IsL = 89.4
 ImL = 6567.389
 y = 0.0002134221026
+Deaths = 0
 
 SHvec = SH
 SLvec = SL
 VHvec = VH
-VLVec = VL
+VLvec = VL
 ImHvec = ImH
 ImLvec = ImL
 IsHvec = IsH
@@ -64,21 +65,21 @@ RLvec = RL
 #Creating a Loop
 for (i in 1:time){
   for (i in 1:(1/dt)){
-    SH = SH + w*RH*dt + w*VH*dt - mu*NH*dt - pSH*(B1(IsH + ImH + IsL + ImL)*SH*dt) - (1-pSH)*(B1(IsH + ImH + IsL + ImL)*SH*dt) - y*SH*dt - mu*SH*dt
-    SL = SL + w*RL*dt + w*VL*dt - mu*NL*dt - pSL*(B1(IsH+ ImH + IsL + ImL)*SL*dt) - (1-pSL)*(B1(IsH + ImH + IsL + ImL)*SL*dt) - y*SL*dt - mu*SL*dt
-    VL = VL + y*SL*dt + w*VL*dt + w*RL*dt - qVL*(B2(IsH + ImH + IsL + ImL)*SL*dt) - (1-qVL)*(B2(IsH + ImH + IsL + ImL)*SL*dt) - mu(VL*dt)
-    VH = VH + y*SH*dt + w*VH*dt + w*RH*dt - qVH*(B2(IsH + ImH + IsL + ImL)*SH*dt) - (1-qVH)*(B2(IsH + ImH + IsL + ImL)*SH*dt) - mu(VH*dt)
-    ImH = ImH + (1-pSH)*(B1(ImH + IsH + ImL + IsL)SH*dt) + (1-qVH)*(B2(ImH + IsH + ImL + IsL)VH*dt) - (1-PdetH)*r(ImH*dt) - d1*ImH*dt - mu*ImH*dt - det*PdetH*ImH*dt
-    ImL = ImL + (1-pSL)*(B1(ImH + IsH + ImL + IsL)*SH*dt) + (1-qVL)*(B2(ImH + IsH + ImL + IsL)VH*dt) - (1-PdetL)*r(ImL*dt) - d1*ImL*dt - mu*ImL*dt - det*PdetL*ImL*dt
-    IsH = IsH + pSH*(B1*(ImH + ImL + IsH + IsL)*SH*dt) + qVH*(B2(ImH + ImL + IsH + ImL)*VH*dt) + (1-cov*pax)*det*PdetH*ImH*dt - r(IsH*dt) - (1-cov*pax)*d2(IsH*dt) - mu*ImH*dt
-    IsL = IsL + pS*(1(ImH + ImL + IsH + IsL)*SL*dt) + qVL*(B2(ImH + ImL + IsH + ImL)*VL*dt] + det*PdetL*ImL*dt - r(IsL*dt) - d2(IsL*dt) - mu*ImL*dt
-    RH = RH + r(ImH*dt) + r(IsH*dt) - w*RH*dt - mu*RH*dt
-    RL = RL  + r(ImL*dt) + r(IsL*dt) - w*RL*dt - mu*RL*dt
+    SH = SH + w*RH*dt + w*VH*dt - mu*NH*dt - pSH*(B1*(IsH + ImH + IsL + ImL)*SH*dt) - (1-pSH)*(B1*(IsH + ImH + IsL + ImL)*SH*dt) - y*SH*dt - mu*SH*dt
+    SL = SL + w*RL*dt + w*VL*dt - mu*NL*dt - pSL*(B1*(IsH+ ImH + IsL + ImL)*SL*dt) - (1-pSL)*(B1*(IsH + ImH + IsL + ImL)*SL*dt) - y*SL*dt - mu*SL*dt
+    VL = VL + y*SL*dt + w*VL*dt + w*RL*dt - qVL*(B2*(IsH + ImH + IsL + ImL)*SL*dt) - (1-qVL)*(B2*(IsH + ImH + IsL + ImL)*SL*dt) - mu*(VL*dt)
+    VH = VH + y*SH*dt + w*VH*dt + w*RH*dt - qVH*(B2*(IsH + ImH + IsL + ImL)*SH*dt) - (1-qVH)*(B2*(IsH + ImH + IsL + ImL)*SH*dt) - mu*(VH*dt)
+    ImH = ImH + (1-pSH)*(B1*(ImH + IsH + ImL + IsL)*SH*dt) + (1-qVH)*(B2*(ImH + IsH + ImL + IsL)*VH*dt) - (1-PdetH)*(r)*(ImH*dt) - (d1*ImH*dt) - (mu*ImH*dt) - (det*PdetH*ImH*dt)
+    ImL = ImL + (1-pSL)*(B1*(ImH + IsH + ImL + IsL)*SH*dt) + (1-qVL)*(B2*(ImH + IsH + ImL + IsL)*VH*dt) - (1-PdetL)*(r)*(ImL*dt) - (d1*ImL*dt) - (mu*ImL*dt) - (det*PdetL*ImL*dt)
+    IsH = IsH + pSH*(B1*(ImH + ImL + IsH + IsL)*SH*dt) + qVH*(B2*(ImH + ImL + IsH + ImL)*VH*dt) + (1-cov*pax)*(det*PdetH*ImH*dt) - r*(IsH*dt) - (1-cov*pax)*d2*(IsH*dt) - (mu*ImH*dt)
+    IsL = IsL + pSL*(B1*(ImH + ImL + IsH + IsL)*SL*dt) + qVL*(B2*(ImH + ImL + IsH + ImL)*VL*dt) + (det*PdetL*ImL*dt) - r*(IsL*dt) - d2*(IsL*dt) - mu*ImL*dt
+    RH = RH + r*(ImH*dt) + r*(IsH*dt) - w*RH*dt - mu*RH*dt
+    RL = RL + r*(ImL*dt) + r*(IsL*dt) - w*RL*dt - mu*RL*dt
     
     SHvec = c(SHvec, SH)
     SLvec = c(SLvec, SL)
-    VHvec = c(VHvec, EH)
-    VLvec = c(VLvec, EL)
+    VHvec = c(VHvec, VH)
+    VLvec = c(VLvec, VL)
     ImHvec = c(ImHvec, ImH)
     ImLvec = c(ImLvec, ImL)
     IsHvec = c(IsHvec, IsH)
@@ -86,18 +87,25 @@ for (i in 1:time){
     RHvec = c(RHvec, RH)
     RLvec = c(RLvec, RL)
     
-    Deaths = c(Deaths, (d1)(ImH+ImL)*dt+(d2)(IsH+IsL)*dt)
+    Deaths = c(Deaths, (d1)*(ImH+ImL)*dt+(d2)*(IsH+IsL)*dt)
     
     N = SH+SL+VH+VL+ImH+ImL+IsH+IsL+RH+RL
   }
 }
 
-#Plotting Progression Over Time
-plot(Svec, col="blue", type="l", xlab = "Time", ylab = "Population", ylim=c(0,100000))
-lines(Vvec, col = "purple")
-lines(Imvec, col = "red")
-lines(Isvec, col = "orange")
-lines(Rvec, col = "green")
-legend(1500, 100000, c("S","V","Im", "Is","R"), lty=c(1,1,1,1,1), col=c("blue","purple","red","orange","green"))
 
-#Test if Alex can edit
+
+#Plotting Progression Over Time
+plot(SHvec, col="blue", type="l", xlab = "Time", ylab = "Population", ylim=c(0,100000))
+lines(VHvec, col = "red")
+lines(ImHvec, col = "pink")
+lines(IsHvec, col = "brown")
+lines(RHvec, col = "lightpink")
+legend(1500, 100000, c("SH","VH", "ImH", "IsH", "RH"), lty=c(1,1,1,1,1), col=c("blue","red", "pink", "brown", "lightpink"))
+
+plot(SLvec, col="blue", type="l", xlab = "Time", ylab = "Population", ylim=c(0,100000))
+lines(VLvec, col = "orange")
+lines(ImLvec, col = "green")
+lines(IsLvec, col = "yellow")
+lines(RLvec, col = "lightgray")
+legend(1500, 100000, c("SL","VL", "ImL", "IsL", "RL"), lty=c(1,1,1,1,1), col=c("purple", "orange", "green", "yellow", "lightgray"))
