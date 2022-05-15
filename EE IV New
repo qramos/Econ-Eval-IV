@@ -1,12 +1,12 @@
 #Base Case
 #Note that this study examines adults in Maryland
-NH = 1781778 #Total high-risk population
+NH = 1,785,859.691 #Total high-risk population
 SH = 1047693.836 #Susceptible (not fully vaccinated) high-risk population
 VH = 734083.64 #Vaccinated high-risk population
 RH = 0 #Recovered, not yet waned high-risk population
 IsH = 208.6 #High-risk patients with severe COVID-19 (hospitalized)
 ImH = 3873.611 #High-risk patients with mild COVID-19 (non-hospitalized)
-NL = 3020857.491 #Total low-risk population
+NL = 3027514.280 #Total low-risk population
 SL = 1669603.667 #Susceptible (not fully vaccinated) low-risk population
 VL = 1351253.824 #Vaccinated low-risk population
 RL = 0 #Recovered, not yet waned low-risk population
@@ -39,13 +39,13 @@ qVL = 0.009400928886 #Probability of low-risk vaccinated individuals having seve
 pax = 0.89 #Protective effect (%) of Paxlovid on preventing severe infection/death
 cov = 0 #Coverage of paxlovid
 
-NH = 1781778
+NH = 1785859.691
 SH = 1047693.836
 VH = 734083.64
 RH = 0
 IsH = 208.6
 ImH = 3873.611
-NL = 3020857.491
+NL = 3027514.280
 SL = 1669603.667
 VL = 1351253.824
 RL = 0
@@ -78,6 +78,12 @@ for (i in 1:time){
     IsL = IsL + pSL*(B1*(ImH + ImL + IsH + IsL)*SL*dt) + qVL*(B2*(ImH + ImL + IsH + IsL)*VL*dt) + (det*PdetL*ImL*dt) - r*(IsL*dt) - d2*(IsL*dt) - mu*ImL*dt
     RH = RH + r*(ImH*dt) + r*(IsH*dt) - w*RH*dt - mu*RH*dt
     RL = RL + r*(ImL*dt) + r*(IsL*dt) - w*RL*dt - mu*RL*dt
+    
+    S = S(t) + wR(t)dt + wV(t)dt - muN(t)dt - p[B1(Imild(t) + Isevere(t))S(t)dt] - (1-p)[B1(Imild(t) + Isevere(t))S(t)dt] - yS(t)dt - muS(t)dt
+    V = V(t) + yS(t)dt + wV(t)dt +wR(t)dt - q[B2(Imild(t) + Isevere(t))S(t)dt] - (1-q)[B2(Imild(t) + Isevere(t))S(t)dt] - muV(t)dt
+    Imild = Imild(t) + (1-p)[B1(Imild(t) + Isevere(t))S(t)dt] + (1-q)[B2(Imild(t) + Isevere(t))S(t)dt] - r1(Imild(t)dt) - d1Imild(t)dt - muImild(t)dt
+    Isevere = Isevere(t) +p[B1(Imild(t) + Isevere(t))S(t)dt]+q[B2(Imild(t) + Isevere(t))S(t)dt]- r2(Isevere(t)dt) - d2Isevere(t)dt -muImild(t)dt
+    R = R(t) + r1(Imild(t)dt) + r2(Isevere(t)dt) - wR(t)dt - muR(t)dt
     
     SHvec = c(SHvec, SH)
     SLvec = c(SLvec, SL)
