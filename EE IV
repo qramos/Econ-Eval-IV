@@ -27,6 +27,8 @@ w = 0.005555555556 #Waning rate
 det = 0.286 #Deterioration rate per infected from mild to severe infection
 PdetH = 0.070 #Probability of deterioration rate from mild to severe infection in high-risk patients
 PdetL = 0.048 #Probability of deterioration rate from mild to severe infection in low-risk patients
+pH = 0.371 #Proportion of population that is high-risk
+pL = 0.629 #Proportion of population that is low-risk
 d1 = 0 #Death rate from mild infection
 d2 = 0.0189 #Death rate from severe infection
 mu = 0.0000311 #Natural birth/death rate
@@ -66,14 +68,14 @@ RLvec = RL
 #Creating a Loop
 for (i in 1:time){
   for (i in 1:(1/dt)){
-    SH = SH + w*RH*dt + w*VH*dt - mu*NH*dt - pSH*(B1*(IsH + ImH + IsL + ImL)*SH*dt) - (1-pSH)*(B1*(IsH + ImH + IsL + ImL)*SH*dt) - y*SH*dt - mu*SH*dt
-    SL = SL + w*RL*dt + w*VL*dt - mu*NL*dt - pSL*(B1*(IsH+ ImH + IsL + ImL)*SL*dt) - (1-pSL)*(B1*(IsH + ImH + IsL + ImL)*SL*dt) - y*SL*dt - mu*SL*dt
-    VL = VL + y*SL*dt + w*VL*dt + w*RL*dt - qVL*(B2*(IsH + ImH + IsL + ImL)*SL*dt) - (1-qVL)*(B2*(IsH + ImH + IsL + ImL)*SL*dt) - mu*(VL*dt)
-    VH = VH + y*SH*dt + w*VH*dt + w*RH*dt - qVH*(B2*(IsH + ImH + IsL + ImL)*SH*dt) - (1-qVH)*(B2*(IsH + ImH + IsL + ImL)*SH*dt) - mu*(VH*dt)
-    ImH = ImH + (1-pSH)*(B1*(ImH + IsH + ImL + IsL)*SH*dt) + (1-qVH)*(B2*(ImH + IsH + ImL + IsL)*VH*dt) - (1-PdetH)*(r)*(ImH*dt) - (d1*ImH*dt) - (mu*ImH*dt) - (det*PdetH*ImH*dt)
-    ImL = ImL + (1-pSL)*(B1*(ImH + IsH + ImL + IsL)*SH*dt) + (1-qVL)*(B2*(ImH + IsH + ImL + IsL)*VH*dt) - (1-PdetL)*(r)*(ImL*dt) - (d1*ImL*dt) - (mu*ImL*dt) - (det*PdetL*ImL*dt)
-    IsH = IsH + pSH*(B1*(ImH + ImL + IsH + IsL)*SH*dt) + qVH*(B2*(ImH + ImL + IsH + ImL)*VH*dt) + (1-cov*pax)*(det*PdetH*ImH*dt) - r*(IsH*dt) - (1-cov*pax)*d2*(IsH*dt) - (mu*ImH*dt)
-    IsL = IsL + pSL*(B1*(ImH + ImL + IsH + IsL)*SL*dt) + qVL*(B2*(ImH + ImL + IsH + ImL)*VL*dt) + (det*PdetL*ImL*dt) - r*(IsL*dt) - d2*(IsL*dt) - mu*ImL*dt
+    SH = SH + w*RH*dt + w*VH*dt + mu*(NH+NL)*pH*dt - pSH*(B1*(IsH + ImH + IsL + ImL)*SH*dt) - (1-pSH)*(B1*(IsH + ImH + IsL + ImL)*SH*dt) - y*SH*dt - mu*SH*dt
+    SL = SL + w*RL*dt + w*VL*dt + mu*(NH+NL)*pL*dt - pSL*(B1*(IsH+ ImH + IsL + ImL)*SL*dt) - (1-pSL)*(B1*(IsH + ImH + IsL + ImL)*SL*dt) - y*SL*dt - mu*SL*dt
+    VL = VL + y*SL*dt - w*VL*dt - qVL*(B2*(IsH + ImH + IsL + ImL)*SL*dt) - (1-qVL)*(B2*(IsH + ImH + IsL + ImL)*SL*dt) - mu*(VL*dt)
+    VH = VH + y*SH*dt - w*VH*dt - qVH*(B2*(IsH + ImH + IsL + ImL)*SH*dt) - (1-qVH)*(B2*(IsH + ImH + IsL + ImL)*SH*dt) - mu*(VH*dt)
+    ImH = ImH + (1-pSH)*(B1*(ImH + IsH + ImL + IsL)*SH*dt) + (1-qVH)*(B2*(ImH + IsH + ImL + IsL)*VH*dt) - (1-PdetH)*(r)*(ImH*dt) - (d1*ImH*dt) - (mu*ImH*dt) - (1-cov*pax)*(det*PdetH*ImH*dt)
+    ImL = ImL + (1-pSL)*(B1*(ImH + IsH + ImL + IsL)*SL*dt) + (1-qVL)*(B2*(ImH + IsH + ImL + IsL)*VL*dt) - (1-PdetL)*(r)*(ImL*dt) - (d1*ImL*dt) - (mu*ImL*dt) - (det*PdetL*ImL*dt)
+    IsH = IsH + pSH*(B1*(ImH + ImL + IsH + IsL)*SH*dt) + qVH*(B2*(ImH + ImL + IsH + IsL)*VH*dt) + (1-cov*pax)*(det*PdetH*ImH*dt) - r*(IsH*dt) - (1-cov*pax)*d2*(IsH*dt) - (mu*ImH*dt)
+    IsL = IsL + pSL*(B1*(ImH + ImL + IsH + IsL)*SL*dt) + qVL*(B2*(ImH + ImL + IsH + IsL)*VL*dt) + (det*PdetL*ImL*dt) - r*(IsL*dt) - d2*(IsL*dt) - mu*ImL*dt
     RH = RH + r*(ImH*dt) + r*(IsH*dt) - w*RH*dt - mu*RH*dt
     RL = RL + r*(ImL*dt) + r*(IsL*dt) - w*RL*dt - mu*RL*dt
     
@@ -90,7 +92,8 @@ for (i in 1:time){
     
     Deaths = c(Deaths, (d1)*(ImH+ImL)*dt+(d2)*(IsH+IsL)*dt)
     
-    N = SH+SL+VH+VL+ImH+ImL+IsH+IsL+RH+RL
+    NH = SH + VH + ImH + IsH + RH
+    NL = SL + VL + ImL + IsL + RL
   }
 }
 
