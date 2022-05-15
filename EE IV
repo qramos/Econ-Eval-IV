@@ -1,3 +1,5 @@
+#Economic Evaluation IV Final Project Model
+
 #Base Case
 #Note that this study examines adults in Maryland
 NH = 1781778 #Total high-risk population
@@ -15,12 +17,12 @@ ImL = 6567.389 #Low-risk patients with mild COVID-19 (non-hospitalized)
 y = 0.0002134 #Daily vaccination rate per susceptible population
 
 #Simulation Time (1 day)
-time = 6 #6 months
-dt = 1/30 #intended to model days
+time = 180 #6 months
+dt = 1 #intended to model days
 
-#Actual Code
-B1 = 0.063 #Per-contact infection rate among unvaccinated (daily)
-B2 = 0.019 #Per-contact infection rate among vaccinated (daily)
+#Code for no Paxlovid model
+B1 = 0.063 #Infection rate among unvaccinated (daily)
+B2 = 0.019 #Infection rate among vaccinated (daily)
 r = 0.071 #Per-infected recovery rate (daily)
 R0 = 0.890 #Reproduction number
 w = 0.005555555556 #Waning rate
@@ -53,6 +55,7 @@ IsL = 89.4
 ImL = 6567.389
 y = 0.0002134221026
 Deaths = 0
+Newsev = 0
 
 SHvec = SH
 SLvec = SL
@@ -68,16 +71,18 @@ RLvec = RL
 #Creating a Loop
 for (i in 1:time){
   for (i in 1:(1/dt)){
-    SH = SH + w*RH + w*VH + mu*(NH+NL)*pH - pSH*(B1*(IsH + ImH + IsL + ImL)*SH) - (1-pSH)*(B1*(IsH + ImH + IsL + ImL)*SH) - y*SH - mu*SH
-    SL = SL + w*RL + w*VL + mu*(NH+NL)*pL - pSL*(B1*(IsH+ ImH + IsL + ImL)*SL) - (1-pSL)*(B1*(IsH + ImH + IsL + ImL)*SL) - y*SL - mu*SL
-    VL = VL + y*SL - w*VL - qVL*(B2*(IsH + ImH + IsL + ImL)*SL) - (1-qVL)*(B2*(IsH + ImH + IsL + ImL)*SL) - mu*(VL)
-    VH = VH + y*SH - w*VH - qVH*(B2*(IsH + ImH + IsL + ImL)*SH) - (1-qVH)*(B2*(IsH + ImH + IsL + ImL)*SH) - mu*(VH)
-    ImH = ImH + (1-pSH)*(B1*(ImH + IsH + ImL + IsL)*SH) + (1-qVH)*(B2*(ImH + IsH + ImL + IsL)*VH) - (1-PdetH)*(r)*(ImH) - (d1*ImH) - (mu*ImH) - (1-cov*pax)*(det*PdetH*ImH)
-    ImL = ImL + (1-pSL)*(B1*(ImH + IsH + ImL + IsL)*SL) + (1-qVL)*(B2*(ImH + IsH + ImL + IsL)*VL) - (1-PdetL)*(r)*(ImL) - (d1*ImL) - (mu*ImL) - (det*PdetL*ImL)
-    IsH = IsH + pSH*(B1*(ImH + ImL + IsH + IsL)*SH) + qVH*(B2*(ImH + ImL + IsH + IsL)*VH) + (1-cov*pax)*(det*PdetH*ImH) - r*IsH - (1-cov*pax)*d2*IsH - (mu*ImH)
-    IsL = IsL + pSL*(B1*(ImH + ImL + IsH + IsL)*SL) + qVL*(B2*(ImH + ImL + IsH + IsL)*VL) + (det*PdetL*ImL) - r*IsL - d2*IsL - mu*ImL
-    RH = RH + r*(ImH) + r*(IsH) - w*RH - mu*RH
-    RL = RL + r*(ImL) + r*(IsL) - w*RL - mu*RL
+    B1 = 0.063/(NH+NL)
+    B2 = 0.019/(NH+NL)
+    SH = SH + w*RH*dt + w*VH*dt + mu*(NH+NL)*pH*dt - pSH*(B1*(IsH + ImH + IsL + ImL)*SH*dt) - (1-pSH)*(B1*(IsH + ImH + IsL + ImL)*SH*dt) - y*SH*dt - mu*SH*dt
+    SL = SL + w*RL*dt + w*VL*dt + mu*(NH+NL)*pL*dt - pSL*(B1*(IsH+ ImH + IsL + ImL)*SL*dt) - (1-pSL)*(B1*(IsH + ImH + IsL + ImL)*SL*dt) - y*SL*dt - mu*SL*dt
+    VL = VL + y*SL*dt - w*VL*dt - qVL*(B2*(IsH + ImH + IsL + ImL)*SL*dt) - (1-qVL)*(B2*(IsH + ImH + IsL + ImL)*SL*dt) - mu*(VL*dt)
+    VH = VH + y*SH*dt - w*VH*dt - qVH*(B2*(IsH + ImH + IsL + ImL)*SH*dt) - (1-qVH)*(B2*(IsH + ImH + IsL + ImL)*SH*dt) - mu*(VH*dt)
+    ImH = ImH + (1-pSH)*(B1*(ImH + IsH + ImL + IsL)*SH*dt) + (1-qVH)*(B2*(ImH + IsH + ImL + IsL)*VH*dt) - (1-PdetH)*(r)*(ImH*dt) - (d1*ImH*dt) - (mu*ImH*dt) - (1-cov*pax)*(det*PdetH*ImH*dt)
+    ImL = ImL + (1-pSL)*(B1*(ImH + IsH + ImL + IsL)*SL*dt) + (1-qVL)*(B2*(ImH + IsH + ImL + IsL)*VL*dt) - (1-PdetL)*(r)*(ImL*dt) - (d1*ImL*dt) - (mu*ImL*dt) - (det*PdetL*ImL*dt)
+    IsH = IsH + pSH*(B1*(ImH + ImL + IsH + IsL)*SH*dt) + qVH*(B2*(ImH + ImL + IsH + IsL)*VH*dt) + (1-cov*pax)*(det*PdetH*ImH*dt) - r*(IsH*dt) - (1-cov*pax)*d2*(IsH*dt) - (mu*ImH*dt)
+    IsL = IsL + pSL*(B1*(ImH + ImL + IsH + IsL)*SL*dt) + qVL*(B2*(ImH + ImL + IsH + IsL)*VL*dt) + (det*PdetL*ImL*dt) - r*(IsL*dt) - d2*(IsL*dt) - mu*ImL*dt
+    RH = RH + r*(ImH*dt) + r*(IsH*dt) - w*RH*dt - mu*RH*dt
+    RL = RL + r*(ImL*dt) + r*(IsL*dt) - w*RL*dt - mu*RL*dt
     
     SHvec = c(SHvec, SH)
     SLvec = c(SLvec, SL)
@@ -91,82 +96,73 @@ for (i in 1:time){
     RLvec = c(RLvec, RL)
     
     Deaths = c(Deaths, (d1)*(ImH+ImL)*dt+(d2)*(IsH+IsL)*dt)
+    Newsev = c(Newsev, (pSH*(B1*(ImH + ImL + IsH + IsL)*SH*dt) + qVH*(B2*(ImH + ImL + IsH + IsL)*VH*dt) + (1-cov*mol)*(det*PdetH*ImH*dt)))
     
     NH = SH + VH + ImH + IsH + RH
     NL = SL + VL + ImL + IsL + RL
+
+    
   }
 }
 
-plot(SHvec, col="blue", type="l", xlab = "Time", ylab = "Population", ylim=c(0,100000), xlim=c(0,7))
-lines(VHvec, col = "red")
-lines(ImHvec, col = "pink")
-lines(IsHvec, col = "brown")
-lines(RHvec, col = "lightpink")
-legend(1500, 100000, c("SH","VH", "ImH", "IsH", "RH"), lty=c(1,1,1,1,1), col=c("blue","red", "pink", "brown", "lightpink"))
+Notx_hosp = sum(Newsev)
+Nodrugdeaths = Deaths
 
-plot(SLvec, col="blue", type="l", xlab = "Time", ylab = "Population", ylim=c(0,100000), xlim=c(0,7))
-lines(VLvec, col = "orange")
-lines(ImLvec, col = "green")
-lines(IsLvec, col = "yellow")
-lines(RLvec, col = "lightgray")
-legend(1500, 100000, c("SL","VL", "ImL", "IsL", "RL"), lty=c(1,1,1,1,1), col=c("purple", "orange", "green", "yellow", "lightgray"))
+##Combined plots with no Paxlovid
+plot((SHvec+SLvec), col="blue", main = "SVImIsR & Deaths Plot Over 180 Days", type="l", xlab = "Time", ylab = "Population", ylim=c(0,4000000), xlim=c(0,180))
+lines((VHvec+VLvec), col = "red")
+lines((ImHvec+ImLvec), col = "orange")
+lines((IsHvec+IsLvec), col = "brown")
+lines((RHvec+RLvec), col = "green")
+lines((Deaths), col = "purple")
+legend(150, 2000000, c("S","V", "Im", "Is", "R", "Deaths"), lty=c(1,1,1,1,1,1), col=c("blue","red", "orange", "brown", "green", "purple"))
 
-??????
-#Base Case
-#Note that this study examines adults in Maryland
-NH = 1785859.691 #Total high-risk population
-SH = 1047693.836 #Susceptible (not fully vaccinated) high-risk population
-VH = 734083.64 #Vaccinated high-risk population
-RH = 0 #Recovered, not yet waned high-risk population
-IsH = 208.6 #High-risk patients with severe COVID-19 (hospitalized)
-ImH = 3873.611 #High-risk patients with mild COVID-19 (non-hospitalized)
-NL = 3027514.280 #Total low-risk population
-SL = 1669603.667 #Susceptible (not fully vaccinated) low-risk population
-VL = 1351253.824 #Vaccinated low-risk population
-RL = 0 #Recovered, not yet waned low-risk population
-IsL = 89.4 #Low-risk patients with severe COVID-19 (hospitalized)
-ImL = 6567.389 #Low-risk patients with mild COVID-19 (non-hospitalized)
-y = 0.0002134 #Daily vaccination rate per susceptible population
+##Small plots no Paxlovid
+plot((ImHvec+ImLvec), col="blue", type="l", main = "ImIrR & Deaths Over 180 Days, No Paxlovid", xlab = "Time", ylab = "Population", ylim=c(0,30000), xlim=c(0,180))
+lines((IsHvec+IsLvec), col = "brown")
+lines((RHvec+RLvec), col = "green")
+lines((Deaths), col = "purple")
+legend(150, 25000, c("Im", "Is", "R", "Deaths"), lty=c(1,1,1,1), col=c("blue","brown", "green", "purple"))
 
-#Simulation Time (1 day)
-time = 6 #6 months
-dt = 1/30 #intended to model days
-
-#Actual Code
-B1 = 0.000000013128 #Per-contact infection rate among unvaccinated (daily)
-B2 = 0.00000000395 #Per-contact infection rate among vaccinated (daily)
+################################
+#####Paxlovid model code########
+################################
+B1 = 0.063 #Infection rate among unvaccinated (daily)
+B2 = 0.019 #Infection rate among vaccinated (daily)
 r = 0.071 #Per-infected recovery rate (daily)
 R0 = 0.890 #Reproduction number
-w = 0.000000001154 #Waning rate
-det = 0.000000059358 #Deterioration rate per infected from mild to severe infection
+w = 0.005555555556 #Waning rate
+det = 0.286 #Deterioration rate per infected from mild to severe infection
 PdetH = 0.070 #Probability of deterioration rate from mild to severe infection in high-risk patients
 PdetL = 0.048 #Probability of deterioration rate from mild to severe infection in low-risk patients
 pH = 0.371 #Proportion of population that is high-risk
 pL = 0.629 #Proportion of population that is low-risk
 d1 = 0 #Death rate from mild infection
-d2 = 0.000000003926559647 #Death rate from severe infection
+d2 = 0.0189 #Death rate from severe infection
 mu = 0.0000311 #Natural birth/death rate
 pSH = 0.01958759014 #Probability of high-risk unvaccinated individuals having severe infection
 pSL = 0.01342989841 #Probability of low-risk unvaccinated individuals having severe infection
 qVH = 0.0137113131 #Probability of high-risk vaccinated individuals having severe infection
 qVL = 0.009400928886 #Probability of low-risk vaccinated individuals having severe infection
 pax = 0.89 #Protective effect (%) of Paxlovid on preventing severe infection/death
-cov = 0 #Coverage of paxlovid
+cov = 1 #Coverage of paxlovid
 
-NH = 1785860
-SH = 1047694
-VH = 734084
-RH = 4082
-IsH = 209
-ImH = 3874
-NL = 3027514
-SL = 1669604
-VL = 1351254
-RL = 6657
-IsL = 89
-ImL = 6567
+NH = 1781778
+SH = 1047693.836
+VH = 734083.64
+RH = 0
+IsH = 208.6
+ImH = 3873.611
+NL = 3020857.491
+SL = 1669603.667
+VL = 1351253.824
+RL = 0
+IsL = 89.4
+ImL = 6567.389
 y = 0.0002134221026
 Deaths = 0
+Newmild = 0
+Newsev = 0
 
 SHvec = SH
 SLvec = SL
@@ -182,16 +178,18 @@ RLvec = RL
 #Creating a Loop
 for (i in 1:time){
   for (i in 1:(1/dt)){
-    SH = SH + w*RH + w*VH + mu*(NH)*pH - pSH*(B1*(IsH + ImH)*SH) - (1-pSH)*(B1*(IsH + ImH)*SH) - y*SH - mu*SH
-    SL = SL + w*RL + w*VL + mu*(NL)*pL - pSL*(B1*(IsL + ImL)*SL) - (1-pSL)*(B1*(IsL + ImL)*SL) - y*SL - mu*SL
-    VL = VL + y*SL - w*VL - qVL*(B2*(IsL + ImL)*SL) - (1-qVL)*(B2*(IsL + ImL)*SL) - mu*(VL)
-    VH = VH + y*SH - w*VH - qVH*(B2*(IsH + ImH)*SH) - (1-qVH)*(B2*(IsH + ImH)*SH) - mu*(VH)
-    ImH = ImH + (1-pSH)*(B1*(ImH + IsH)*SH) + (1-qVH)*(B2*(ImH + IsH)*VH) - (1-PdetH)*(r)*(ImH) - (d1*ImH) - (mu*ImH) - (1-cov*pax)*(det*PdetH*ImH)
-    ImL = ImL + (1-pSL)*(B1*(ImL + IsL)*SL) + (1-qVL)*(B2*(ImL + IsL)*VL) - (1-PdetL)*(r)*(ImL) - (d1*ImL) - (mu*ImL) - (det*PdetL*ImL)
-    IsH = IsH + pSH*(B1*(ImH + IsH)*SH) + qVH*(B2*(ImH + IsH)*VH) + (1-cov*pax)*(det*PdetH*ImH) - r*IsH - (1-cov*pax)*d2*IsH - (mu*ImH)
-    IsL = IsL + pSL*(B1*(ImL + IsL)*SL) + qVL*(B2*(ImL + IsL)*VL) + (det*PdetL*ImL) - r*IsL - d2*IsL - mu*ImL
-    RH = RH + r*(ImH) + r*(IsH) - w*RH - mu*RH
-    RL = RL + r*(ImL) + r*(IsL) - w*RL - mu*RL
+    B1 = 0.063/(NH+NL)
+    B2 = 0.019/(NH+NL)
+    SH = SH + w*RH*dt + w*VH*dt + mu*(NH+NL)*pH*dt - pSH*(B1*(IsH + ImH + IsL + ImL)*SH*dt) - (1-pSH)*(B1*(IsH + ImH + IsL + ImL)*SH*dt) - y*SH*dt - mu*SH*dt
+    SL = SL + w*RL*dt + w*VL*dt + mu*(NH+NL)*pL*dt - pSL*(B1*(IsH+ ImH + IsL + ImL)*SL*dt) - (1-pSL)*(B1*(IsH + ImH + IsL + ImL)*SL*dt) - y*SL*dt - mu*SL*dt
+    VL = VL + y*SL*dt - w*VL*dt - qVL*(B2*(IsH + ImH + IsL + ImL)*SL*dt) - (1-qVL)*(B2*(IsH + ImH + IsL + ImL)*SL*dt) - mu*(VL*dt)
+    VH = VH + y*SH*dt - w*VH*dt - qVH*(B2*(IsH + ImH + IsL + ImL)*SH*dt) - (1-qVH)*(B2*(IsH + ImH + IsL + ImL)*SH*dt) - mu*(VH*dt)
+    ImH = ImH + (1-pSH)*(B1*(ImH + IsH + ImL + IsL)*SH*dt) + (1-qVH)*(B2*(ImH + IsH + ImL + IsL)*VH*dt) - (1-PdetH)*(r)*(ImH*dt) - (d1*ImH*dt) - (mu*ImH*dt) - (1-cov*pax)*(det*PdetH*ImH*dt)
+    ImL = ImL + (1-pSL)*(B1*(ImH + IsH + ImL + IsL)*SL*dt) + (1-qVL)*(B2*(ImH + IsH + ImL + IsL)*VL*dt) - (1-PdetL)*(r)*(ImL*dt) - (d1*ImL*dt) - (mu*ImL*dt) - (det*PdetL*ImL*dt)
+    IsH = IsH + pSH*(B1*(ImH + ImL + IsH + IsL)*SH*dt) + qVH*(B2*(ImH + ImL + IsH + IsL)*VH*dt) + (1-cov*pax)*(det*PdetH*ImH*dt) - r*(IsH*dt) - (1-cov*pax)*d2*(IsH*dt) - (mu*ImH*dt)
+    IsL = IsL + pSL*(B1*(ImH + ImL + IsH + IsL)*SL*dt) + qVL*(B2*(ImH + ImL + IsH + IsL)*VL*dt) + (det*PdetL*ImL*dt) - r*(IsL*dt) - d2*(IsL*dt) - mu*ImL*dt
+    RH = RH + r*(ImH*dt) + r*(IsH*dt) - w*RH*dt - mu*RH*dt
+    RL = RL + r*(ImL*dt) + r*(IsL*dt) - w*RL*dt - mu*RL*dt
     
     SHvec = c(SHvec, SH)
     SLvec = c(SLvec, SL)
@@ -205,22 +203,185 @@ for (i in 1:time){
     RLvec = c(RLvec, RL)
     
     Deaths = c(Deaths, (d1)*(ImH+ImL)*dt+(d2)*(IsH+IsL)*dt)
+    Newmild = c(Newmild, (1-pSH)*(B1*(ImH + IsH + ImL + IsL)*SH*dt) + (1-qVH)*(B2*(ImH + IsH + ImL + IsL)*VH*dt))
+    Newsev = c(Newsev, (pSH*(B1*(ImH + ImL + IsH + IsL)*SH*dt) + qVH*(B2*(ImH + ImL + IsH + IsL)*VH*dt) + (1-cov*mol)*(det*PdetH*ImH*dt)))
     
     NH = SH + VH + ImH + IsH + RH
     NL = SL + VL + ImL + IsL + RL
+    
   }
 }
 
-plot(SHvec, col="blue", type="l", xlab = "Time", ylab = "Population", ylim=c(0,100000), xlim=c(0,7))
-lines(VHvec, col = "red")
-lines(ImHvec, col = "pink")
-lines(IsHvec, col = "brown")
-lines(RHvec, col = "lightpink")
-legend(1500, 100000, c("SH","VH", "ImH", "IsH", "RH"), lty=c(1,1,1,1,1), col=c("blue","red", "pink", "brown", "lightpink"))
+Total_mild = (sum(Newmild))+3873.611
+Total_pax = Total_mild
+Pax_hosp = sum(Newsev)
 
-plot(SLvec, col="blue", type="l", xlab = "Time", ylab = "Population", ylim=c(0,100000), xlim=c(0,7))
-lines(VLvec, col = "orange")
-lines(ImLvec, col = "green")
-lines(IsLvec, col = "yellow")
-lines(RLvec, col = "lightgray")
-legend(1500, 100000, c("SL","VL", "ImL", "IsL", "RL"), lty=c(1,1,1,1,1), col=c("purple", "orange", "green", "yellow", "lightgray"))
+##Combined plots with Paxlovid
+plot((SHvec+SLvec), col="blue", main = "SVImIsR & Deaths Plot Over 180 Days", type="l", xlab = "Time", ylab = "Population", ylim=c(0,4000000), xlim=c(0,180))
+lines((VHvec+VLvec), col = "red")
+lines((ImHvec+ImLvec), col = "orange")
+lines((IsHvec+IsLvec), col = "brown")
+lines((RHvec+RLvec), col = "green")
+lines((Deaths), col = "purple")
+legend(150, 2000000, c("S","V", "Im", "Is", "R", "Deaths"), lty=c(1,1,1,1,1,1), col=c("blue","red", "orange", "brown", "green", "purple"))
+
+##Small plots Paxlovid
+plot((ImHvec+ImLvec), col="blue", type="l", main = "ImIrR & Deaths Over 180 Days, No Paxlovid", xlab = "Time", ylab = "Population", ylim=c(0,30000), xlim=c(0,180))
+lines((IsHvec+IsLvec), col = "brown")
+lines((RHvec+RLvec), col = "green")
+lines((Deaths), col = "purple")
+lines((Paxdeathsaverted), col = "grey")
+legend(150, 25000, c("Im", "Is", "R", "Deaths", "Deaths averted due to Paxlovid"), lty=c(1,1,1,1,1), col=c("blue","brown", "green", "purple", "grey"))
+
+Paxdeaths = Deaths
+Paxdeathsaverted = (Nopaxdeaths-Paxdeaths)
+plot((Paxdeathsaverted), main = "Deaths averted due to Paxlovid over time", xlab = "Time (days)", ylab = "Number of deaths averted by Paxlovid")
+
+####################################
+#####Molnupiravir model code########
+####################################
+B1 = 0.063 #Infection rate among unvaccinated (daily)
+B2 = 0.019 #Infection rate among vaccinated (daily)
+r = 0.071 #Per-infected recovery rate (daily)
+R0 = 0.890 #Reproduction number
+w = 0.005555555556 #Waning rate
+det = 0.286 #Deterioration rate per infected from mild to severe infection
+PdetH = 0.070 #Probability of deterioration rate from mild to severe infection in high-risk patients
+PdetL = 0.048 #Probability of deterioration rate from mild to severe infection in low-risk patients
+pH = 0.371 #Proportion of population that is high-risk
+pL = 0.629 #Proportion of population that is low-risk
+d1 = 0 #Death rate from mild infection
+d2 = 0.0189 #Death rate from severe infection
+mu = 0.0000311 #Natural birth/death rate
+pSH = 0.01958759014 #Probability of high-risk unvaccinated individuals having severe infection
+pSL = 0.01342989841 #Probability of low-risk unvaccinated individuals having severe infection
+qVH = 0.0137113131 #Probability of high-risk vaccinated individuals having severe infection
+qVL = 0.009400928886 #Probability of low-risk vaccinated individuals having severe infection
+mol = 0.48227 #Protective effect (%) of molnupiravir on preventing severe infection/death
+cov = 1 #Coverage of molnupiravir
+
+NH = 1781778
+SH = 1047693.836
+VH = 734083.64
+RH = 0
+IsH = 208.6
+ImH = 3873.611
+NL = 3020857.491
+SL = 1669603.667
+VL = 1351253.824
+RL = 0
+IsL = 89.4
+ImL = 6567.389
+y = 0.0002134221026
+Deaths = 0
+Newmild = 0
+Newsev = 0
+
+SHvec = SH
+SLvec = SL
+VHvec = VH
+VLvec = VL
+ImHvec = ImH
+ImLvec = ImL
+IsHvec = IsH
+IsLvec = IsL
+RHvec = RH
+RLvec = RL
+
+#Creating a Loop
+for (i in 1:time){
+  for (i in 1:(1/dt)){
+    B1 = 0.063/(NH+NL)
+    B2 = 0.019/(NH+NL)
+    SH = SH + w*RH*dt + w*VH*dt + mu*(NH+NL)*pH*dt - pSH*(B1*(IsH + ImH + IsL + ImL)*SH*dt) - (1-pSH)*(B1*(IsH + ImH + IsL + ImL)*SH*dt) - y*SH*dt - mu*SH*dt
+    SL = SL + w*RL*dt + w*VL*dt + mu*(NH+NL)*pL*dt - pSL*(B1*(IsH+ ImH + IsL + ImL)*SL*dt) - (1-pSL)*(B1*(IsH + ImH + IsL + ImL)*SL*dt) - y*SL*dt - mu*SL*dt
+    VL = VL + y*SL*dt - w*VL*dt - qVL*(B2*(IsH + ImH + IsL + ImL)*SL*dt) - (1-qVL)*(B2*(IsH + ImH + IsL + ImL)*SL*dt) - mu*(VL*dt)
+    VH = VH + y*SH*dt - w*VH*dt - qVH*(B2*(IsH + ImH + IsL + ImL)*SH*dt) - (1-qVH)*(B2*(IsH + ImH + IsL + ImL)*SH*dt) - mu*(VH*dt)
+    ImH = ImH + (1-pSH)*(B1*(ImH + IsH + ImL + IsL)*SH*dt) + (1-qVH)*(B2*(ImH + IsH + ImL + IsL)*VH*dt) - (1-PdetH)*(r)*(ImH*dt) - (d1*ImH*dt) - (mu*ImH*dt) - (1-cov*mol)*(det*PdetH*ImH*dt)
+    ImL = ImL + (1-pSL)*(B1*(ImH + IsH + ImL + IsL)*SL*dt) + (1-qVL)*(B2*(ImH + IsH + ImL + IsL)*VL*dt) - (1-PdetL)*(r)*(ImL*dt) - (d1*ImL*dt) - (mu*ImL*dt) - (det*PdetL*ImL*dt)
+    IsH = IsH + pSH*(B1*(ImH + ImL + IsH + IsL)*SH*dt) + qVH*(B2*(ImH + ImL + IsH + IsL)*VH*dt) + (1-cov*mol)*(det*PdetH*ImH*dt) - r*(IsH*dt) - (1-cov*mol)*d2*(IsH*dt) - (mu*ImH*dt)
+    IsL = IsL + pSL*(B1*(ImH + ImL + IsH + IsL)*SL*dt) + qVL*(B2*(ImH + ImL + IsH + IsL)*VL*dt) + (det*PdetL*ImL*dt) - r*(IsL*dt) - d2*(IsL*dt) - mu*ImL*dt
+    RH = RH + r*(ImH*dt) + r*(IsH*dt) - w*RH*dt - mu*RH*dt
+    RL = RL + r*(ImL*dt) + r*(IsL*dt) - w*RL*dt - mu*RL*dt
+    
+    SHvec = c(SHvec, SH)
+    SLvec = c(SLvec, SL)
+    VHvec = c(VHvec, VH)
+    VLvec = c(VLvec, VL)
+    ImHvec = c(ImHvec, ImH)
+    ImLvec = c(ImLvec, ImL)
+    IsHvec = c(IsHvec, IsH)
+    IsLvec = c(IsLvec, IsL)
+    RHvec = c(RHvec, RH)
+    RLvec = c(RLvec, RL)
+    
+    Deaths = c(Deaths, (d1)*(ImH+ImL)*dt+(d2)*(IsH+IsL)*dt)
+    Newmild = c(Newmild, (1-pSH)*(B1*(ImH + IsH + ImL + IsL)*SH*dt) + (1-qVH)*(B2*(ImH + IsH + ImL + IsL)*VH*dt))
+    Newsev = c(Newsev, (pSH*(B1*(ImH + ImL + IsH + IsL)*SH*dt) + qVH*(B2*(ImH + ImL + IsH + IsL)*VH*dt) + (1-cov*mol)*(det*PdetH*ImH*dt)))
+    
+    NH = SH + VH + ImH + IsH + RH
+    NL = SL + VL + ImL + IsL + RL
+    
+  }
+}
+
+Total_mild = (sum(Newmild))+3873.611
+Total_mol = Total_mild
+Mol_hosp = sum(Newsev)
+
+##Combined plots with molnupiravir
+plot((SHvec+SLvec), col="blue", main = "SVImIsR & Deaths Plot Over 180 Days", type="l", xlab = "Time", ylab = "Population", ylim=c(0,4000000), xlim=c(0,180))
+lines((VHvec+VLvec), col = "red")
+lines((ImHvec+ImLvec), col = "orange")
+lines((IsHvec+IsLvec), col = "brown")
+lines((RHvec+RLvec), col = "green")
+lines((Deaths), col = "purple")
+legend(150, 2000000, c("S","V", "Im", "Is", "R", "Deaths"), lty=c(1,1,1,1,1,1), col=c("blue","red", "orange", "brown", "green", "purple"))
+
+##Small plots with molnupiravir
+plot((ImHvec+ImLvec), col="blue", type="l", main = "ImIrR & Deaths Over 180 Days, No Paxlovid", xlab = "Time", ylab = "Population", ylim=c(0,30000), xlim=c(0,180))
+lines((IsHvec+IsLvec), col = "brown")
+lines((RHvec+RLvec), col = "green")
+lines((Deaths), col = "purple")
+lines((Paxdeathsaverted), col = "grey")
+legend(150, 25000, c("Im", "Is", "R", "Deaths", "Deaths averted due to Paxlovid"), lty=c(1,1,1,1,1), col=c("blue","brown", "green", "purple", "grey"))
+
+moldeaths = Deaths
+moldeathsaverted = (Nodrugdeaths-moldeaths)
+
+plot((moldeathsaverted), type = "l", col="blue", main = "Deaths averted due to molnupiravir or Paxlovid over time", xlab = "Time (days)", ylab = "Number of deaths averted by molnupiravir (blue) or Paxlovid (red)", ylim=c(0,8))
+lines((Paxdeathsaverted), col = "red")
+legend(130,6, c("Paxlovid", "Molnupiravir"), lty=c(1,1), col=c("red", "blue"))
+
+sum(Paxdeathsaverted)-sum(moldeathsaverted)
+
+#Cost analysis
+cost_hosp = 24713
+cost_pax = 530
+cost_mol = 700
+
+CostsNoTx = cost_hosp*Notx_hosp
+CostsPax = Total_pax*cost_pax + cost_hosp*Pax_hosp
+CostsMol = Total_mol*cost_mol + cost_hosp*Mol_hosp
+
+CostsNoTx
+CostsPax
+CostsMol
+
+#ICER Paxlovid vs. No Drug
+ICER1 = (CostsPax-CostsNoTx)/(sum(Paxdeathsaverted))
+
+#ICER Molnupiravir vs. No Drug
+ICER2 = (CostsMol-CostsNoTx)/(sum(moldeathsaverted))
+
+ICER1 #$-33624.48 per death averted <- Paxlovid dominates no treatment
+ICER2 #$-117460.9 per death averted <- Molnupiravir dominates no treatment
+
+#ICER Paxlovid vs. Molnupiravir
+ICER3 = (CostsPax-CostsMol)/((sum(Paxdeathsaverted)-sum(moldeathsaverted)))
+ICER3 #16,407.62 per additional death averted <- Ensuring 100% coverage of all  high-risk mild COVID-19 patients with Paxlovid costs 
+#$16,407.62 per death averted compared to molnupiravir. This intervention is cost-effective
+
+#Graphing ICER plots
+ICERplot = c(ICER1, ICER2, ICER3)
+barplot(ICERplot) #Will make in Excel
