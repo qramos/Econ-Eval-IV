@@ -67,7 +67,13 @@ SH = SH+ w*RH*dt + w*VH*dt - mu*NH*dt - pSH[B1(IsH + ImH + IsL + ImL)*SH*dt] - (
 SL = SL+ w*RL*dt + w*VL*dt - mu*NL*dt - pSL[B1(IsH+ ImH + IsL + ImL)*SL*dt] - (1-pSL)[B1(IsH + ImH + IsL + ImL)*SL*dt] - y*SL*dt - mu*SL*dt
 ImH = ImH + (1-pSH)[B1(ImH + IsH + ImL + IsL)SH*dt] + (1-qVH)[B2(ImH + IsH + ImL + IsL)SH*dt] - r(ImH*dt) - d1*ImH*dt - mu*ImH*dt
 VL = VL + y*SL*dt + w*VL*dt + w*RL*dt - qVL[B2(IsH + ImH + IsL + ImL)*SL*dt] - (1-qVL)[B2(IsH + ImH + IsL + ImL)*SL*dt] - mu(VL*dt)
-R = R(t) + r1(Im(t)*dt) + r2(Is(t)*dt) - w*R(t)*dt - mu*R(t)*dt
+VH = VH + y*SH*dt + w*VH*dt + w*RH*dt - qVH[B2(IsH + ImH + IsL + ImL)*SH*dt] - (1-qVH)[B2(IsH + ImH + IsL + ImL)*SH*dt] - mu(VH*dt)
+ImH = ImH + (1-pSH)[B1(ImH + IsH + ImL + IsL)SH*dt] + (1-qVH)[B2(ImH + IsH + ImL + IsL)VH*dt] - (1-PdetH)*r(ImH*dt) - d1*ImH*dt - mu*ImH*dt - det*PdetH*ImH*dt
+ImL = ImL + (1-pSL)[B1(ImH + IsH + ImL + IsL)*SH*dt] + (1-qVL)[B2(ImH + IsH + ImL + IsL)VH*dt] - (1-PdetL)*r(ImL*dt) - d1*ImL*dt - mu*ImL*dt - det*PdetL*ImL*dt
+IsH = IsH + pSH[B1(ImH + ImL + IsH + IsL)*SH*dt] + qVH[B2(ImH + ImL + IsH + ImL)*VH*dt] + (1-cov*pax)*det*PdetH*ImH*dt - r(IsH*dt) - (1-cov*pax)*d2(IsH*dt) - mu*ImH*dt
+IsL = IsL + pSL[B1(ImH + ImL + IsH + IsL)*SL*dt] + qVL[B2(ImH + ImL + IsH + ImL)*VL*dt] + det*PdetL*ImL*dt - r(IsL*dt) - d2(IsL*dt) - mu*ImL*dt
+RH = RH + r(ImH*dt) + r(IsH*dt) - w*RH*dt - mu*RH*dt
+RL = RL  + r(ImL*dt) + r(IsL*dt) - w*RL*dt - mu*RL*dt
 
 Svec = c(Svec, S)
 Vvec = c(Vvec, E)
