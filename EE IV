@@ -1,68 +1,72 @@
 #Base Case
-NH = 
-SH =
-VH =
-RH =
-IsH =
-ImH = 
-NL =
-SL =
-VL =
-RL =
-IsL =
-ImL =
-Y = 
+NH = 1781778
+SH = 1047693.836
+VH = 734083.64
+RH = 0
+IsH = 208.6
+ImH = 3873.611
+NL = 3020857.491
+SL = 1669603.667
+VL = 1351253.824
+RL = 0
+IsL = 89.4
+ImL = 6567.389
+y = 513
 
 #Simulation Time (1 day)
-β = 
-µ = 
-γ = 
-κ = 
-v = 
+t = 6
+dt = 0.03333333333
 
 #Actual Code
-N = 100000
-B1 = 0.003478
-B2 = 0.00025
-mu = 0.00575 ##Maryland birth rate
-gamma = 
-v =
-kappa = 
-Deaths = 
-
-y = 0.758 ##Maryland vaccination rate
-w = 0.0015
-r1 = 1
-r2 = 0.014
+B1 = 0.063
+B2 = 0.019
+r = 0.071
+R0 = 0.890
+wR = 0.005555555556
+det = 0.286
+PdetH = 0.070
+PdetL = 0.048
 d1 = 0
-d2 = 0.019
-p = 
-1-p =
-q =
-1-q =
+d2 = 0.0189
+mu = 0.0000311
+pSH = 0.01958759014
+pSL = 0.01342989841
+qVH = 0.0137113131
+qVL = 0.009400928886
 
-time = 1
-dt = 1
 
-S = 99998
-V = 0
-Im = 1
-Is = 1
-R = 0
+NH = 1781778
+SH = 1047693.836
+VH = 734083.64
+RH = 0
+IsH = 208.6
+ImH = 3873.611
+NL = 3020857.491
+SL = 1669603.667
+VL = 1351253.824
+RL = 0
+IsL = 89.4
+ImL = 6567.389
+y = 513
 
-Svec = S
-Vvec = V
-Imvec = Im
-Isvec = Is
-Rvec = R
+SHvec = SH
+SLvec = SL
+VHvec = VH
+VLVec = VL
+ImHvec = ImH
+ImLvec = ImL
+IsHvec = IsH
+IsLvec = IsL
+RHvec = RH
+RLvec = RL
 
 #Creating a Loop
 for (i in 1:time){
 for (i in 1:(1/dt)){
-S = S(t) + w*R(t)*dt + w*V(t)*dt - mu*N(t)*dt - p[B1(Im(t)+Is(t))*S(t)*dt] - (1-p)*[B1(Im(t)+Is(t))*S(t)*dt] - y*S(t)*dt - mu*S(t)*dt
-V = V(t) + y*S(t)*dt + w*V(t)*dt + w*R(t)*dt - q[B2(Im(t)+Is(t))*S(t)*dt] - (1-q)*[B2(Im(t)+Is(t))*S(t)*dt] - mu*V(t)*dt
-Im = Im(t)+(1-p)[B1(Im(t)+Is(t))*S(t)*dt] + (1-q)[B2(Im(t)+Is(t))*S(t)*dt] - r1*(Im(t)*dt) - d1*Im(t)*dt - mu*Im(t)*dt
-Is = Is(t) + p[B1(Im(t)+Is(t))*S(t)*dt] + q[B2(Im(t)+Is(t))*S(t)*dt] - r2(Is(t)*dt) - d2*Is(t)*dt - mu*Im(t)*dt
+SH = SH+ w*RH*dt + w*VH*dt - mu*NH*dt - pSH[B1(IsH + ImH + IsL + ImL)*SH*dt] - (1-pSH)[B1(IsH + ImH + IsL + ImL)*SH*dt] - y*SH*dt - mu*SH*dt
+SL = SL+ w*RL*dt + w*VL*dt - mu*NL*dt - pSL[B1(IsH+ ImH + IsL + ImL)*SL*dt] - (1-pSL)[B1(IsH + ImH + IsL + ImL)*SL*dt] - y*SL*dt - mu*SL*dt
+ImH = ImH + (1-pSH)[B1(ImH + IsH + ImL + IsL)SH*dt] + (1-qVH)[B2(ImH + IsH + ImL + IsL)SH*dt] - r(ImH*dt) - d1*ImH*dt - mu*ImH*dt
+VL = VL + y*SL*dt + w*VL*dt + w*RL*dt - qVL[B2(IsH + ImH + IsL + ImL)*SL*dt] - (1-qVL)[B2(IsH + ImH + IsL + ImL)*SL*dt] - mu(VL*dt)
 R = R(t) + r1(Im(t)*dt) + r2(Is(t)*dt) - w*R(t)*dt - mu*R(t)*dt
 
 Svec = c(Svec, S)
