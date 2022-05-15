@@ -88,7 +88,7 @@ RLvec = c(RLvec, R)
 
 Deaths = c(Deaths, kappa*I*dt)
 
-N = S+V+Im+Is+R
+N = SH+SL+VH+VL+ImH+ImL+IsH+IsL+RH+RL
 }
 }
 
