@@ -238,7 +238,7 @@ lines((Deaths), col = "purple", lwd=5)
 legend(110, 28000, c("Im", "Is", "R", "Deaths"), lty=c(1,1,1,1), col=c("blue","brown", "green", "purple"), lwd=5)
 
 Paxdeaths = Deaths
-Paxdeathsaverted = (Nopaxdeaths-Paxdeaths)
+Paxdeathsaverted = (Nodrugdeaths-Paxdeaths)
 plot((Paxdeathsaverted), main = "Deaths averted due to Paxlovid over time", xlab = "Time (days)", ylab = "Number of deaths averted by Paxlovid")
 
 ####################################
@@ -388,13 +388,12 @@ ICER1 = (CostsPax-CostsNoTx)/(sum(Paxdeathsaverted))
 #ICER Molnupiravir vs. No Drug
 ICER2 = (CostsMol-CostsNoTx)/(sum(moldeathsaverted))
 
-ICER1 #$-33624.48 per death averted <- Paxlovid dominates no treatment
-ICER2 #$-117460.9 per death averted <- Molnupiravir dominates no treatment
+ICER1
+ICER2
 
 #ICER Paxlovid vs. Molnupiravir
 ICER3 = (CostsPax-CostsMol)/((sum(Paxdeathsaverted)-sum(moldeathsaverted)))
-ICER3 #16,407.62 per additional death averted <- Ensuring 100% coverage of all  high-risk mild COVID-19 patients with Paxlovid costs 
-#$16,407.62 per death averted compared to molnupiravir. This intervention is cost-effective
+ICER3
 
 #Graphing ICER plots
 ICERplot = c(ICER1, ICER2, ICER3)
