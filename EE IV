@@ -96,7 +96,7 @@ for (i in 1:time){
     RLvec = c(RLvec, RL)
     
     Deaths = c(Deaths, (d1)*(ImH+ImL)*dt+(d2)*(IsH+IsL)*dt)
-    Newsev = c(Newsev, (pSH*(B1*(ImH + ImL + IsH + IsL)*SH*dt) + qVH*(B2*(ImH + ImL + IsH + IsL)*VH*dt)))
+    Newsev = c(Newsev, (pSH*(B1*(ImH + ImL + IsH + IsL)*SH*dt) + qVH*(B2*(ImH + ImL + IsH + IsL)*VH*dt)+(det*PdetH*ImH*dt))+(pSL*(B1*(ImH + ImL + IsH + IsL)*SL*dt) + qVL*(B2*(ImH + ImL + IsH + IsL)*VL*dt) + (det*PdetL*ImL*dt)))
     
     NH = SH + VH + ImH + IsH + RH
     NL = SL + VL + ImL + IsL + RL
@@ -111,7 +111,7 @@ Notx_hosp = sum(Newsev)
 Nodrugdeaths = Deaths
 
 
-##Combined plots with no Paxlovid
+##Combined plots with no therapy
 plot((SHvec+SLvec), col="blue", main = "SVImIsR & Deaths Plot Over 180 Days, No Paxlovid", type="l", xlab = "Time (Days)", ylab = "Adult Population", ylim=c(0,4000000), xlim=c(0,180), lwd=5)
 lines((VHvec+VLvec), col = "red", lwd=5)
 lines((ImHvec+ImLvec), col = "orange", lwd=5)
@@ -120,8 +120,8 @@ lines((RHvec+RLvec), col = "green", lwd=5)
 lines((Deaths), col = "purple", lwd=5)
 legend(150, 2000000, c("S","V", "Im", "Is", "R", "Deaths"), lty=c(1,1,1,1,1,1), col=c("blue","red", "orange", "brown", "green", "purple"), lwd=5)
 
-##Small plots no Paxlovid
-plot((ImHvec+ImLvec), col="blue", type="l", main = "ImIsR & Deaths Over 180 Days, No Paxlovid", xlab = "Time (Days)", ylab = "Adult Population", ylim=c(0,30000), xlim=c(0,180), lwd=5)
+##Small plots no therapy
+plot((ImHvec+ImLvec), col="blue", type="l", main = "ImIsR & Deaths Over 180 Days, No Therapy", xlab = "Time (Days)", ylab = "Adult Population", ylim=c(0,30000), xlim=c(0,180), lwd=5)
 lines((IsHvec+IsLvec), col = "brown", lwd=5)
 lines((RHvec+RLvec), col = "green", lwd=5)
 lines((Deaths), col = "purple", lwd=5)
@@ -206,8 +206,8 @@ for (i in 1:time){
     RLvec = c(RLvec, RL)
     
     Deaths = c(Deaths, (d1)*(ImH+ImL)*dt+(d2)*(IsH+IsL)*dt)
-    Newmild = c(Newmild, (1-pSH)*(B1*(ImH + IsH + ImL + IsL)*SH*dt) + (1-qVH)*(B2*(ImH + IsH + ImL + IsL)*VH*dt))
-    Newsev = c(Newsev, (pSH*(B1*(ImH + ImL + IsH + IsL)*SH*dt) + qVH*(B2*(ImH + ImL + IsH + IsL)*VH*dt) + (1-cov*mol)*(det*PdetH*ImH*dt)))
+    Newmild = c(Newmild, (1-pSH)*(B1*(ImH + IsH + ImL + IsL)*SH*dt) + (1-qVH)*(B2*(ImH + IsH + ImL + IsL)*VH*dt)+((1-pSL)*(B1*(ImH + IsH + ImL + IsL)*SL*dt) + (1-qVL)*(B2*(ImH + IsH + ImL + IsL)*VL*dt)))
+    Newsev = c(Newsev, (pSH*(B1*(ImH + ImL + IsH + IsL)*SH*dt) + qVH*(B2*(ImH + ImL + IsH + IsL)*VH*dt) + (1-cov*pax)*(det*PdetH*ImH*dt)+(pSL*(B1*(ImH + ImL + IsH + IsL)*SL*dt) + qVL*(B2*(ImH + ImL + IsH + IsL)*VL*dt) + (det*PdetL*ImL*dt))))
     
     NH = SH + VH + ImH + IsH + RH
     NL = SL + VL + ImL + IsL + RL
@@ -235,7 +235,7 @@ plot((ImHvec+ImLvec), col="blue", type="l", main = "ImIrR & Deaths Over 180 Days
 lines((IsHvec+IsLvec), col = "brown", lwd=5)
 lines((RHvec+RLvec), col = "green", lwd=5)
 lines((Deaths), col = "purple", lwd=5)
-legend(110, 28000, c("Im", "Is", "R", "Deaths"), lty=c(1,1,1,1), col=c("blue","brown", "green", "purple"), lwd=5)
+legend(150, 25000, c("Im", "Is", "R", "Deaths"), lty=c(1,1,1,1), col=c("blue","brown", "green", "purple"), lwd=5)
 
 Paxdeaths = Deaths
 Paxdeathsaverted = (Nodrugdeaths-Paxdeaths)
@@ -320,8 +320,8 @@ for (i in 1:time){
     RLvec = c(RLvec, RL)
     
     Deaths = c(Deaths, (d1)*(ImH+ImL)*dt+(d2)*(IsH+IsL)*dt)
-    Newmild = c(Newmild, (1-pSH)*(B1*(ImH + IsH + ImL + IsL)*SH*dt) + (1-qVH)*(B2*(ImH + IsH + ImL + IsL)*VH*dt))
-    Newsev = c(Newsev, (pSH*(B1*(ImH + ImL + IsH + IsL)*SH*dt) + qVH*(B2*(ImH + ImL + IsH + IsL)*VH*dt) + (1-cov*mol)*(det*PdetH*ImH*dt)))
+    Newmild = c(Newmild, (1-pSH)*(B1*(ImH + IsH + ImL + IsL)*SH*dt) + (1-qVH)*(B2*(ImH + IsH + ImL + IsL)*VH*dt)+((1-pSL)*(B1*(ImH + IsH + ImL + IsL)*SL*dt) + (1-qVL)*(B2*(ImH + IsH + ImL + IsL)*VL*dt)))
+    Newsev = c(Newsev, (pSH*(B1*(ImH + ImL + IsH + IsL)*SH*dt) + qVH*(B2*(ImH + ImL + IsH + IsL)*VH*dt) + (1-cov*mol)*(det*PdetH*ImH*dt)+(pSL*(B1*(ImH + ImL + IsH + IsL)*SL*dt) + qVL*(B2*(ImH + ImL + IsH + IsL)*VL*dt) + (det*PdetL*ImL*dt))))
     
     NH = SH + VH + ImH + IsH + RH
     NL = SL + VL + ImL + IsL + RL
@@ -349,7 +349,7 @@ plot((ImHvec+ImLvec), col="blue", type="l", main = "ImIrR & Deaths Over 180 Days
 lines((IsHvec+IsLvec), col = "brown", lwd=5)
 lines((RHvec+RLvec), col = "green", lwd=5)
 lines((Deaths), col = "purple", lwd=5)
-legend(125, 25000, c("Im", "Is", "R", "Deaths"), lty=c(1,1,1,1), col=c("blue","brown", "green", "purple"), lwd=5)
+legend(150, 25000, c("Im", "Is", "R", "Deaths"), lty=c(1,1,1,1), col=c("blue","brown", "green", "purple"), lwd=5)
 
 moldeaths = Deaths
 moldeathsaverted = (Nodrugdeaths-moldeaths)
@@ -388,12 +388,12 @@ ICER1 = (CostsPax-CostsNoTx)/(sum(Paxdeathsaverted))
 #ICER Molnupiravir vs. No Drug
 ICER2 = (CostsMol-CostsNoTx)/(sum(moldeathsaverted))
 
-ICER1
-ICER2
+ICER1 #$42,077.15 per death averted
+ICER2 #$329,050.30 per death averted
 
 #ICER Paxlovid vs. Molnupiravir
 ICER3 = (CostsPax-CostsMol)/((sum(Paxdeathsaverted)-sum(moldeathsaverted)))
-ICER3
+ICER3 #$-129,183.40 per death averted
 
 #Graphing ICER plots
 ICERplot = c(ICER1, ICER2, ICER3)
