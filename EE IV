@@ -105,24 +105,27 @@ for (i in 1:time){
   }
 }
 
+Notx_mild = (ImLvec+ImHvec)
+Notx_severe = (IsLvec+IsHvec)
 Notx_hosp = sum(Newsev)
 Nodrugdeaths = Deaths
 
+
 ##Combined plots with no Paxlovid
-plot((SHvec+SLvec), col="blue", main = "SVImIsR & Deaths Plot Over 180 Days", type="l", xlab = "Time", ylab = "Population", ylim=c(0,4000000), xlim=c(0,180))
-lines((VHvec+VLvec), col = "red")
-lines((ImHvec+ImLvec), col = "orange")
-lines((IsHvec+IsLvec), col = "brown")
-lines((RHvec+RLvec), col = "green")
-lines((Deaths), col = "purple")
-legend(150, 2000000, c("S","V", "Im", "Is", "R", "Deaths"), lty=c(1,1,1,1,1,1), col=c("blue","red", "orange", "brown", "green", "purple"))
+plot((SHvec+SLvec), col="blue", main = "SVImIsR & Deaths Plot Over 180 Days, No Paxlovid", type="l", xlab = "Time (Days)", ylab = "Adult Population", ylim=c(0,4000000), xlim=c(0,180), lwd=5)
+lines((VHvec+VLvec), col = "red", lwd=5)
+lines((ImHvec+ImLvec), col = "orange", lwd=5)
+lines((IsHvec+IsLvec), col = "brown", lwd=5)
+lines((RHvec+RLvec), col = "green", lwd=5)
+lines((Deaths), col = "purple", lwd=5)
+legend(150, 2000000, c("S","V", "Im", "Is", "R", "Deaths"), lty=c(1,1,1,1,1,1), col=c("blue","red", "orange", "brown", "green", "purple"), lwd=5)
 
 ##Small plots no Paxlovid
-plot((ImHvec+ImLvec), col="blue", type="l", main = "ImIrR & Deaths Over 180 Days, No Paxlovid", xlab = "Time", ylab = "Population", ylim=c(0,30000), xlim=c(0,180))
-lines((IsHvec+IsLvec), col = "brown")
-lines((RHvec+RLvec), col = "green")
-lines((Deaths), col = "purple")
-legend(150, 25000, c("Im", "Is", "R", "Deaths"), lty=c(1,1,1,1), col=c("blue","brown", "green", "purple"))
+plot((ImHvec+ImLvec), col="blue", type="l", main = "ImIsR & Deaths Over 180 Days, No Paxlovid", xlab = "Time (Days)", ylab = "Adult Population", ylim=c(0,30000), xlim=c(0,180), lwd=5)
+lines((IsHvec+IsLvec), col = "brown", lwd=5)
+lines((RHvec+RLvec), col = "green", lwd=5)
+lines((Deaths), col = "purple", lwd=5)
+legend(150, 25000, c("Im", "Is", "R", "Deaths"), lty=c(1,1,1,1), col=c("blue","brown", "green", "purple"), lwd=5)
 
 ################################
 #####Paxlovid model code########
@@ -212,26 +215,27 @@ for (i in 1:time){
   }
 }
 
+Pax_mild = (ImLvec+ImHvec)
+Pax_severe = (IsLvec+IsHvec)
 Total_mild = (sum(Newmild))+3873.611
 Total_pax = Total_mild
 Pax_hosp = sum(Newsev)
 
 ##Combined plots with Paxlovid
-plot((SHvec+SLvec), col="blue", main = "SVImIsR & Deaths Plot Over 180 Days", type="l", xlab = "Time", ylab = "Population", ylim=c(0,4000000), xlim=c(0,180))
-lines((VHvec+VLvec), col = "red")
-lines((ImHvec+ImLvec), col = "orange")
-lines((IsHvec+IsLvec), col = "brown")
-lines((RHvec+RLvec), col = "green")
-lines((Deaths), col = "purple")
-legend(150, 2000000, c("S","V", "Im", "Is", "R", "Deaths"), lty=c(1,1,1,1,1,1), col=c("blue","red", "orange", "brown", "green", "purple"))
+plot((SHvec+SLvec), col="blue", main = "SVImIsR & Deaths Plot Over 180 Days, Full Coverage of Paxlovid", type="l", xlab = "Time (Days)", ylab = "Adult Population", ylim=c(0,4000000), xlim=c(0,180), lwd=5)
+lines((VHvec+VLvec), col = "red", lwd=5)
+lines((ImHvec+ImLvec), col = "orange", lwd=5)
+lines((IsHvec+IsLvec), col = "brown", lwd=5)
+lines((RHvec+RLvec), col = "green", lwd=5)
+lines((Deaths), col = "purple", lwd=5)
+legend(150, 2000000, c("S","V", "Im", "Is", "R", "Deaths"), lty=c(1,1,1,1,1,1), col=c("blue","red", "orange", "brown", "green", "purple"), lwd=5)
 
 ##Small plots Paxlovid
-plot((ImHvec+ImLvec), col="blue", type="l", main = "ImIrR & Deaths Over 180 Days, No Paxlovid", xlab = "Time", ylab = "Population", ylim=c(0,30000), xlim=c(0,180))
-lines((IsHvec+IsLvec), col = "brown")
-lines((RHvec+RLvec), col = "green")
-lines((Deaths), col = "purple")
-lines((Paxdeathsaverted), col = "grey")
-legend(150, 25000, c("Im", "Is", "R", "Deaths", "Deaths averted due to Paxlovid"), lty=c(1,1,1,1,1), col=c("blue","brown", "green", "purple", "grey"))
+plot((ImHvec+ImLvec), col="blue", type="l", main = "ImIrR & Deaths Over 180 Days, Full Coverage of Paxlovid", xlab = "Time (Days)", ylab = "Adult Population", ylim=c(0,30000), xlim=c(0,180), lwd=5)
+lines((IsHvec+IsLvec), col = "brown", lwd=5)
+lines((RHvec+RLvec), col = "green", lwd=5)
+lines((Deaths), col = "purple", lwd=5)
+legend(110, 28000, c("Im", "Is", "R", "Deaths", "Deaths averted due to Paxlovid"), lty=c(1,1,1,1), col=c("blue","brown", "green", "purple"), lwd=5)
 
 Paxdeaths = Deaths
 Paxdeathsaverted = (Nopaxdeaths-Paxdeaths)
@@ -325,35 +329,45 @@ for (i in 1:time){
   }
 }
 
+Mol_mild = (ImLvec+ImHvec)
+Mol_severe = (IsLvec+IsHvec)
 Total_mild = (sum(Newmild))+3873.611
 Total_mol = Total_mild
 Mol_hosp = sum(Newsev)
 
 ##Combined plots with molnupiravir
-plot((SHvec+SLvec), col="blue", main = "SVImIsR & Deaths Plot Over 180 Days", type="l", xlab = "Time", ylab = "Population", ylim=c(0,4000000), xlim=c(0,180))
-lines((VHvec+VLvec), col = "red")
-lines((ImHvec+ImLvec), col = "orange")
-lines((IsHvec+IsLvec), col = "brown")
-lines((RHvec+RLvec), col = "green")
-lines((Deaths), col = "purple")
-legend(150, 2000000, c("S","V", "Im", "Is", "R", "Deaths"), lty=c(1,1,1,1,1,1), col=c("blue","red", "orange", "brown", "green", "purple"))
+plot((SHvec+SLvec), col="blue", main = "SVImIsR & Deaths Plot Over 180 Days, Full Coverage of Molnupiravir", type="l", xlab = "Time (Days)", ylab = "Adult Population", ylim=c(0,4000000), xlim=c(0,180), lwd=5)
+lines((VHvec+VLvec), col = "red", lwd=5)
+lines((ImHvec+ImLvec), col = "orange", lwd=5)
+lines((IsHvec+IsLvec), col = "brown", lwd=5)
+lines((RHvec+RLvec), col = "green", lwd=5)
+lines((Deaths), col = "purple", lwd=5)
+legend(150, 2000000, c("S","V", "Im", "Is", "R", "Deaths"), lty=c(1,1,1,1,1,1), col=c("blue","red", "orange", "brown", "green", "purple"), lwd=5)
 
 ##Small plots with molnupiravir
-plot((ImHvec+ImLvec), col="blue", type="l", main = "ImIrR & Deaths Over 180 Days, No Paxlovid", xlab = "Time", ylab = "Population", ylim=c(0,30000), xlim=c(0,180))
-lines((IsHvec+IsLvec), col = "brown")
-lines((RHvec+RLvec), col = "green")
-lines((Deaths), col = "purple")
-lines((Paxdeathsaverted), col = "grey")
-legend(150, 25000, c("Im", "Is", "R", "Deaths", "Deaths averted due to Paxlovid"), lty=c(1,1,1,1,1), col=c("blue","brown", "green", "purple", "grey"))
+plot((ImHvec+ImLvec), col="blue", type="l", main = "ImIrR & Deaths Over 180 Days, Full Coverage of Molnupiravir", xlab = "Time (Days)", ylab = "Adult Population", ylim=c(0,30000), xlim=c(0,180), lwd=5)
+lines((IsHvec+IsLvec), col = "brown", lwd=5)
+lines((RHvec+RLvec), col = "green", lwd=5)
+lines((Deaths), col = "purple", lwd=5)
+legend(150, 25000, c("Im", "Is", "R", "Deaths", "Deaths averted due to Paxlovid"), lty=c(1,1,1,1), col=c("blue","brown", "green", "purple"), lwd=5)
 
 moldeaths = Deaths
 moldeathsaverted = (Nodrugdeaths-moldeaths)
 
-plot((moldeathsaverted), type = "l", col="blue", main = "Deaths averted due to molnupiravir or Paxlovid over time", xlab = "Time (days)", ylab = "Number of deaths averted by molnupiravir (blue) or Paxlovid (red)", ylim=c(0,8))
-lines((Paxdeathsaverted), col = "red")
-legend(130,6, c("Paxlovid", "Molnupiravir"), lty=c(1,1), col=c("red", "blue"))
+plot((moldeathsaverted), type = "l", col="blue", main = "Deaths Averted Due to Paxlovid or Molnupiravir Over Time", xlab = "Time (Days)", ylab = "Number of deaths averted compared to base case", ylim=c(0,8), lwd=5)
+lines((Paxdeathsaverted), col = "red", lwd=5)
+legend(130,6, c("Paxlovid", "Molnupiravir"), lty=c(1,1), col=c("red", "blue"), lwd=5)
 
 sum(Paxdeathsaverted)-sum(moldeathsaverted)
+
+#Graph of infections in each model over time
+plot((Pax_mild), col="blue", main = "Infections Over Time by Model", type="l", xlab = "Time (Days)", ylab = "Number of Infections", ylim=c(0,11000), xlim=c(0,180), lwd=5)
+lines((Mol_mild), col = "red", lwd=5)
+lines((Notx_mild), col = "orange", lwd=5)
+lines((Notx_severe), col = "brown", lwd=5)
+lines((Mol_severe), col = "green", lwd=5)
+lines((Pax_severe), col = "purple", lwd=5)
+legend(100, 8000, c("Paxlovid - Mild","Molnupiravir - Mild", "No Treatment - Mild", "No Treatment - Severe", "Molnupiravir- Severe", "Paxlovid - Severe"), lty=c(1,1,1,1,1,1), col=c("blue","red", "orange", "brown", "green", "purple"), lwd=5)
 
 #Cost analysis
 cost_hosp = 24713
