@@ -96,7 +96,7 @@ for (i in 1:time){
     RLvec = c(RLvec, RL)
     
     Deaths = c(Deaths, (d1)*(ImH+ImL)*dt+(d2)*(IsH+IsL)*dt)
-    Newsev = c(Newsev, (pSH*(B1*(ImH + ImL + IsH + IsL)*SH*dt) + qVH*(B2*(ImH + ImL + IsH + IsL)*VH*dt) + (1-cov*mol)*(det*PdetH*ImH*dt)))
+    Newsev = c(Newsev, (pSH*(B1*(ImH + ImL + IsH + IsL)*SH*dt) + qVH*(B2*(ImH + ImL + IsH + IsL)*VH*dt)))
     
     NH = SH + VH + ImH + IsH + RH
     NL = SL + VL + ImL + IsL + RL
